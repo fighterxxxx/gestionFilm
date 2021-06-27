@@ -1,0 +1,96 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails DVD{% endblock %}
+{% block breadcrumbs %}
+<script src="{{ asset('theme/assets/js/jquery.min.js')}}"></script>
+
+        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-flex align-items-center justify-content-between">
+                                    <h4 class="mb-0 font-size-18">DVD</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Gestion film</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">DVD </a></li>
+                                            <li class="breadcrumb-item active">Détails</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        {% endblock %}
+{% block body %}
+
+
+         <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+     <div class="row">
+                            <div class="col-8">
+                                        <h4 class="card-title"><i class="fa fa-angle-right"></i>Détails DVD</h4>
+</div><div class="col-4">
+                                            <a href="{{ path('d_v_d_index') }}" class="btn btn-secondary">Retour à la liste</a>
+
+                                   </div>
+                               </div>
+<br><br>
+<div class="table-responsive">
+                                            <table class="table table-editable">
+        <tbody>
+
+
+  <tr>
+                <th>Film</th>
+                <td>{{ d_v_d.film.titre }}</td>
+            </tr>
+             <tr>
+                <th>Langue</th>
+                <td>{{ d_v_d.film.langue }}</td>
+            </tr>
+            <tr>
+                <th>Nombre copie</th>
+                <td>{{ d_v_d.nbrcopie }}</td>
+            </tr>
+            <tr>
+                <th>Prix </th>
+                <td>{{ d_v_d.prix }} euro</td>
+            </tr>
+
+
+            <tr>
+                <th>Date d'ajout</th>
+                <td>{{ d_v_d.dateajout ? d_v_d.dateajout|date('d-m-Y') : '' }}</td>
+            </tr>
+            <tr>
+                    <th> Disponibilité </th>
+                    <td>
+
+{% set nbre = 0 %}
+{% for em in  d_v_d.emprunts  %}
+{% if em.etat =='Encours'%}
+
+    {% set nbre = nbre + 1 %}
+{% endif %}{% endfor %} Emprunté: {{ nbre }}
+
+Disponible : {{  d_v_d.nbrcopie-nbre}}
+
+            </td>
+                </tr>
+        </tbody>
+    </table>
+   {% if d_v_d.nbrcopie-nbre> 0 %}
+ {% if is_granted('ROLE_ADMIN') %}
+{% else %}
+ <a href="{{ path('emprunte_new',{'id':d_v_d.id})}}"><input type="submit" value="Emprunter" id="hide" class="btn btn-success" /></a>
+  {% endif %}
+{% endif %}
+
+    </div>
+  </div></div></div></div>
+{% endblock %}

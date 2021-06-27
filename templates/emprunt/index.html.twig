@@ -1,0 +1,159 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Liste emprunt {% endblock %}
+
+
+{% block breadcrumbs %}
+<script src="{{ asset('theme/assets/js/jquery.min.js')}}"></script>
+ <script data-require="datatables@*" data-semver="1.10.12" src="{{ asset('theme/assets/js/jquery.dataTables.min.js')}}"></script>
+        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-flex align-items-center justify-content-between">
+                                    <h4 class="mb-0 font-size-18">Emprunt</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Gestion film</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Emprunt</a></li>
+                                            <li class="breadcrumb-item active">Liste</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        {% endblock %}
+{% block body %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+     <div class="row">
+                            <div class="col-8">
+                                        <h4 class="card-title"><i class="fa fa-angle-right"></i>Liste des  emprunts</h4>
+</div><div class="col-4">
+
+
+
+
+                                   </div>
+                               </div>
+                               <br>
+                                {% for flashMessage in app.session.flashbag.get('success') %}
+
+    <div class="alert alert-success" role="alert">
+                                                {{ flashMessage }}
+                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+                                            </div>
+                                              {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+
+    <div class="alert alert-danger" role="alert">
+                                                {{ flashMessage }}
+                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+                                            </div>
+                                              {% endfor %}
+                                        <div class="table-responsive">
+<table id="datatable-buttons" class="table table-striped table-bordered w-100 dataTable no-footer" role="grid" aria-describedby="datatable-buttons_info" style="width: 1061px;">                                                <thead>
+                                                    <tr>
+
+                           <th>DVD</th>
+                            <th>Langue</th>
+{% if is_granted('ROLE_ADMIN') %}
+                 <th>Client</th>
+                 {% endif %}
+                <th>Etat</th>
+<th>Prix</th>
+                <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+        {% for emprunt in emprunts %}
+            <tr>
+                <td>{{ emprunt.dvd.film.titre }} </td>
+                                <td>{{ emprunt.dvd.film.langue }} </td>
+{% if is_granted('ROLE_ADMIN') %}
+                <td>{{ emprunt.user.nom }} {{ emprunt.user.prenom }}</td>
+                {% endif  %}
+                <td>{{ emprunt.etat }}</td>
+                                    {% if emprunt.etat =='Encours'%}
+
+     <td>{{ emprunt.dvd.prix }}</td>
+                         {% else %}
+                              <td>{{ emprunt.prix }}</td>
+
+                    {% endif %}
+
+                <td>
+                    <a href="{{ path('emprunt_show', {'id': emprunt.id}) }}">
+                    <i class="fa fa-eye"></i></a>
+                    {% if emprunt.etat =='Encours'%}
+                     {% if is_granted('ROLE_ADMIN') %}
+
+{% else %}
+                       <a href="{{ path('empruntclient_edit', {'id': emprunt.id}) }}"><i class="fa fa-share"></i></a>
+
+{% endif %}
+                    {% endif %}
+
+
+
+                </td>
+            </tr>
+        {% endfor %}
+
+
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end col -->
+                        </div>
+
+                            <script>
+                                $(document).ready(function() {
+
+                          var table = $('#datatable-buttons').DataTable({
+
+  language: {
+
+
+    "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+    "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+    "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+    "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+    "sInfoPostFix":    "",
+    "sInfoThousands":  ",",
+    "sLengthMenu":     "Afficher _MENU_ éléments",
+    "sLoadingRecords": "Chargement...",
+    "sProcessing":     "Traitement...",
+    "sSearch":         "Rechercher :",
+    "sZeroRecords":    "Aucun élément correspondant trouvé",
+    "oPaginate": {
+        "sFirst":    "Premier",
+        "sLast":     "Dernier",
+        "sNext":     "Suivant",
+        "sPrevious": "Précédent"
+    },
+    "oAria": {
+        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+        "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+    },
+    "select": {
+            "rows": {
+                "_": "%d lignes sélectionnées",
+                "0": "Aucune ligne sélectionnée",
+                "1": "1 ligne sélectionnée"
+            }
+    }
+}
+});
+});</script>
+                      {% endblock %}

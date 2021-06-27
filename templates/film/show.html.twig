@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails film{% endblock %}
+{% block breadcrumbs %}
+<script src="{{ asset('theme/assets/js/jquery.min.js')}}"></script>
+
+        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-flex align-items-center justify-content-between">
+                                    <h4 class="mb-0 font-size-18">Film</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Gestion film</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Film </a></li>
+                                            <li class="breadcrumb-item active">Détails</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        {% endblock %}
+{% block body %}
+
+
+         <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+     <div class="row">
+                            <div class="col-8">
+                                        <h4 class="card-title"><i class="fa fa-angle-right"></i>Détails film</h4>
+</div><div class="col-4">
+                                            <a href="{{ path('film_index') }}" class="btn btn-secondary">Retour à la liste</a>
+
+                                   </div>
+                               </div>
+<br><br>
+<div class="table-responsive">
+                                            <table class="table table-editable">
+        <tbody>
+
+
+
+            <tr>
+                <th>Titre</th>
+                <td>{{ film.titre }}</td>
+            </tr>
+            <tr>
+                <th>Réalisateur</th>
+                <td>{{ film.realisateur }}</td>
+            </tr>
+            <tr>
+                <th>Acteur</th>
+                <td>{{ film.acteur }}</td>
+            </tr>
+
+
+            <tr>
+                <th>Langue</th>
+                <td>{{ film.langue }}</td>
+            </tr>
+             <tr>
+                <th>Catégorie</th>
+                <td>{{ film.categorie.nom }}</td>
+            </tr>
+             <tr>
+                <th>Année sortie</th>
+                <td>{{ film.anneesortie ? film.anneesortie|date('d-m-Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date d'ajout</th>
+                <td>{{ film.dateajout ? film.dateajout|date('d-m-Y') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </div></div></div></div>
+{% endblock %}
